@@ -213,9 +213,9 @@ facet_map_layout.grid <- function(facet, data, layout) {
 }
 
 #' @export
-facet_render.grid <- function(facet, panel, coord, theme, geom_grobs) {
+facet_render.grid <- function(facet, panel, coord, theme, geom_grobs,row_strip_sides = "right", col_strip_sides = "top") {
   axes <- facet_axes(facet, panel, coord, theme)
-  strips <- facet_strips(facet, panel, theme)
+  strips <- facet_strips(facet, panel, theme, row_strip_sides, col_strip_sides)
   panels <- facet_panels(facet, panel, coord, theme, geom_grobs)
 
   # adjust the size of axes to the size of panel
@@ -245,13 +245,13 @@ facet_render.grid <- function(facet, panel, coord, theme, geom_grobs) {
 }
 
 #' @export
-facet_strips.grid <- function(facet, panel, theme) {
+facet_strips.grid <- function(facet, panel, theme, row_strip_sides = "right", col_strip_sides = "top") {
   col_vars <- unique(panel$layout[names(facet$cols)])
   row_vars <- unique(panel$layout[names(facet$rows)])
 
   list(
-    r = build_strip(panel, row_vars, facet$labeller, theme, "r"),
-    t = build_strip(panel, col_vars, facet$labeller, theme, "t")
+    r = build_strip(panel, row_vars, facet$labeller, theme, side = row_strip_sides),
+    t = build_strip(panel, col_vars, facet$labeller, theme, side = col_strip_sides)
   )
 }
 
